@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./imagens/icon.ico">
+    <link rel="stylesheet" href="style.css">
+    <title>Consulta de Amônia</title>
+    <script>
+        function fetchAmmoniaData(event) {
+            // Previne o envio do formulário
+            event.preventDefault();
+
+            // Obtém a data e o horário do input
+            let data = document.getElementById('dataInput').value;
+            let horario = document.getElementById('horarioInput').value;
+
+            // Valida se a data foi inserida
+            if (!data) {
+                document.getElementById('resultado').innerHTML = "Por favor, selecione uma data.";
+                return;
+            }
+
+            // Cria uma requisição AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "consultar.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            // Define o que acontece quando a resposta é recebida
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Atualiza o conteúdo da div de resultado com a resposta
+                    document.getElementById('resultado').innerHTML = xhr.responseText;
+                } else {
+                    document.getElementById('resultado').innerHTML = "Dados não existentes.";
+                }
+            };
+
+            // Define o que acontece em caso de erro de rede
+            xhr.onerror = function() {
+                document.getElementById('resultado').innerHTML = "Erro de rede. Tente novamente.";
+            };
+
+            // Envia a requisição com a data e o horário (se fornecido)
+            let params = "data=" + encodeURIComponent(data);
+            if (horario) {
+                params += "&horario=" + encodeURIComponent(horario);
+            }
+            xhr.send(params);
+        }
+    </script>
+</head>
+<body>
+    <img src="./imagens/logo.png" alt="Imagem da Gelnex">
+    <div class="container">
+        <h1>Consulta de Amônia</h1>
+        <form>
+            <label for="data">Selecione uma data:</label>
+            <input type="date" id="dataInput" class="date-input" required>
+            <input type="time" id="horarioInput" class="time-input">
+            <button id="consultarBtn" class="btn" onclick="fetchAmmoniaData(event)">Consultar</button>
+        </form>
+        <div id="resultado" class="resultado"></div>
+    </div>
+</body>
+</html>
