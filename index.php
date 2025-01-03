@@ -51,7 +51,9 @@
     </script>
 </head>
 <body>
-    <img src="./imagens/logo.png" alt="Imagem da Gelnex">
+    <a href="index.php"> <!-- Link para a página inicial -->
+        <img src="./imagens/logo.png" alt="Imagem da Gelnex">
+    </a>
     <div class="container">
         <h1>Consulta de Amônia</h1>
         <form>
