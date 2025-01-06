@@ -1,49 +1,9 @@
-
-<?php
-$servername = "localhost";
-$username = "root"; // Altere conforme necessário
-$password = ""; // Altere conforme necessário
-$dbname = "amonia_db";
-
-// Criar conexão
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexão
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Obter a data do formulário
-$data = $_POST['data'];
-
-// Preparar e executar a consulta
-$sql = "SELECT * FROM amonia_data WHERE data = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $data);
-$stmt->execute();
-$result = $stmt->get_result();
-
-// Exibir os resultados
-if ($result->num_rows > 0) {
-    echo "<h2>Resultados para a data: $data</h2>";
-    echo "<table border='1'>
-            <tr>
-                <th>ID</th>
-                <th>Data</th>
-                <th>Nível de Amônia</th>
-            </tr>";
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>
-                <td>{$row['id']}</td>
-                <td>{$row['data']}</td>
-                <td>{$row['nivel_amonia']}</td>
-              </tr>";
+para trocar o localhost por um IP real e asism puxar de outro banco de dados, deve ser feito:
+    trocar em consulta/conectar/inserir{
+        servername = localhost
+        username = *nome do ADM do servidor
+        password = *adicionar caso tenha senha
+        dbname = colocar o nome do banco de dados da onde irá puxar (Não ta tabela)
+            o que houver SELECT FROM trocar o nome "informacoes_amonia"
     }
-    echo "</table>";
-} else {
-    echo "Nenhum resultado encontrado para a data: $data";
-}
-
-$stmt->close();
-$conn->close();
-?>
+Além do fato de alterar o que ele vai utilizar como metodo de pesquisa.
